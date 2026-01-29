@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <%- include('partials/sidebar', { active: 'settings', stats: {} }) %>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <h1>Settings</h1>
+        </header>
+
+        <div class="admin-content">
+            <% if (typeof success !== 'undefined' && success) { %>
+            <div class="alert alert-success">Settings saved successfully!</div>
+            <% } %>
+
+            <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-error"><%= error %></div>
+            <% } %>
+
+            <form method="POST" action="/admin/settings" enctype="multipart/form-data" class="admin-form">
+                <div class="settings-section">
+                    <h2>General</h2>
+                    <div class="form-group">
+                        <label for="site_title">Your Name / Site Title</label>
+                        <input type="text" id="site_title" name="site_title" value="<%= settings.site_title || '' %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="site_tagline">Tagline</label>
+                        <input type="text" id="site_tagline" name="site_tagline" value="<%= settings.site_tagline || '' %>" placeholder="e.g., Designer & Developer">
+                    </div>
+                    <div class="form-group">
+                        <label for="site_description">Description</label>
+                        <textarea id="site_description" name="site_description" rows="3"><%= settings.site_description || '' %></textarea>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h2>About</h2>
+                    <div class="form-group">
+                        <label for="about_image">About Photo</label>
+                        <% if (settings.about_image) { %>
+                        <div class="current-image">
+                            <img src="<%= settings.about_image %>" alt="Current about photo" style="max-width: 200px; border-radius: 8px; margin-bottom: 1rem;">
+                        </div>
+                        <% } %>
+                        <input type="file" id="about_image" name="about_image" accept="image/*">
+                        <small style="display: block; margin-top: 0.5rem; color: var(--forest-sage);">Recommended: Square image, at least 400x500px</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="about_text">About Text</label>
+                        <textarea id="about_text" name="about_text" rows="4"><%= settings.about_text || '' %></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="skills">Skills</label>
+                        <input type="text" id="skills" name="skills" value="<%= settings.skills || '' %>" placeholder="Comma-separated: Design, Development, etc.">
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h2>Contact</h2>
+                    <div class="form-group">
+                        <label for="contact_email">Email</label>
+                        <input type="email" id="contact_email" name="contact_email" value="<%= settings.contact_email || '' %>">
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h2>Social Links</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="social_linkedin">LinkedIn URL</label>
+                            <input type="url" id="social_linkedin" name="social_linkedin" value="<%= settings.social_linkedin || '' %>">
+                        </div>
+                        <div class="form-group">
+                            <label for="social_github">GitHub URL</label>
+                            <input type="url" id="social_github" name="social_github" value="<%= settings.social_github || '' %>">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Settings</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

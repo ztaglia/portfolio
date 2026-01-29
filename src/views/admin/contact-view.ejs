@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <%- include('partials/sidebar', { active: 'contacts', stats: {} }) %>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <h1>Message</h1>
+            <div class="header-actions">
+                <a href="/admin/contacts" class="btn btn-secondary">← Back</a>
+            </div>
+        </header>
+
+        <div class="admin-content">
+            <div class="message-detail">
+                <div class="message-header">
+                    <div class="message-meta">
+                        <h2><%= contact.subject || '(No subject)' %></h2>
+                        <p>From: <strong><%= contact.name %></strong> &lt;<%= contact.email %>&gt;</p>
+                        <p>Received: <%= new Date(contact.created_at).toLocaleString() %></p>
+                    </div>
+                    <div class="message-actions">
+                        <a href="mailto:<%= contact.email %>?subject=Re: <%= contact.subject || 'Your message' %>" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            Reply
+                        </a>
+                        <form method="POST" action="/admin/contacts/<%= contact.id %>/delete" onsubmit="return confirm('Delete this message?')">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="message-body">
+                    <p><%= contact.message %></p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

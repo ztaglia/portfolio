@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">Zach's Portfolio</a>
+        <ul class="nav-links">
+            <li><a href="/#about">About</a></li>
+            <li><a href="/#work">Work</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main class="blog-page">
+        <header class="page-header">
+            <span class="section-tag">Blog</span>
+            <h1>Thoughts & Insights</h1>
+            <p>Writing about the creative process.</p>
+        </header>
+
+        <% if (posts.length > 0) { %>
+        <div class="posts-grid">
+            <% posts.forEach(post => { %>
+            <article class="post-card">
+                <% if (post.thumbnail) { %>
+                <div class="post-thumbnail">
+                    <img src="<%= post.thumbnail %>" alt="<%= post.title %>">
+                </div>
+                <% } %>
+                <div class="post-content">
+                    <time datetime="<%= post.created_at %>"><%= new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></time>
+                    <h2><a href="/blog/<%= post.slug %>"><%= post.title %></a></h2>
+                    <p><%= post.excerpt %></p>
+                    <% if (post.tags) { %>
+                    <div class="post-tags">
+                        <% post.tags.split(',').forEach(tag => { %>
+                        <span class="tag"><%= tag.trim() %></span>
+                        <% }); %>
+                    </div>
+                    <% } %>
+                </div>
+            </article>
+            <% }); %>
+        </div>
+        <% } else { %>
+        <div class="empty-state">
+            <p>No posts yet. Check back soon!</p>
+        </div>
+        <% } %>
+    </main>
+
+    <footer>
+        <p>© <%= currentYear %> <%= settings.site_title || 'Your Name' %>. Crafted with <span>♥</span> and intention.</p>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

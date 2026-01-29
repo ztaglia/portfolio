@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <%- include('partials/sidebar', { active: 'projects', stats: {} }) %>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <h1><%= project ? 'Edit Project' : 'New Project' %></h1>
+            <div class="header-actions">
+                <a href="/admin/projects" class="btn btn-secondary">Cancel</a>
+            </div>
+        </header>
+
+        <div class="admin-content">
+            <% if (error) { %>
+            <div class="alert alert-error"><%= error %></div>
+            <% } %>
+
+            <form method="POST" action="/admin/projects<%= project ? '/' + project.id : '' %>" enctype="multipart/form-data" class="admin-form">
+                <div class="form-grid">
+                    <div class="form-main">
+                        <div class="form-group">
+                            <label for="title">Title *</label>
+                            <input type="text" id="title" name="title" value="<%= project ? project.title : '' %>" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <input type="text" id="category" name="category" value="<%= project ? project.category : '' %>" placeholder="e.g., Web Design, Branding">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Short Description</label>
+                            <textarea id="description" name="description" rows="3" placeholder="Brief description for project cards"><%= project ? project.description : '' %></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="content">Full Content (HTML)</label>
+                            <textarea id="content" name="content" rows="12" placeholder="Detailed project write-up..."><%= project ? project.content : '' %></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="link">Live Site URL</label>
+                                <input type="url" id="link" name="link" value="<%= project ? project.link : '' %>" placeholder="https://...">
+                            </div>
+                            <div class="form-group">
+                                <label for="github">GitHub URL</label>
+                                <input type="url" id="github" name="github" value="<%= project ? project.github : '' %>" placeholder="https://github.com/...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-sidebar">
+                        <div class="form-card">
+                            <h3>Thumbnail</h3>
+                            <% if (project && project.thumbnail) { %>
+                            <div class="current-image">
+                                <img src="<%= project.thumbnail %>" alt="Current thumbnail">
+                            </div>
+                            <% } %>
+                            <div class="form-group">
+                                <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
+                            </div>
+                        </div>
+
+                        <div class="form-card">
+                            <h3>Options</h3>
+                            <div class="form-group checkbox">
+                                <label>
+                                    <input type="checkbox" name="featured" <%= project && project.featured ? 'checked' : '' %>>
+                                    Featured Project
+                                </label>
+                            </div>
+                            <div class="form-group checkbox">
+                                <label>
+                                    <input type="checkbox" name="published" <%= !project || project.published ? 'checked' : '' %>>
+                                    Published
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label for="sort_order">Sort Order</label>
+                                <input type="number" id="sort_order" name="sort_order" value="<%= project ? project.sort_order : 0 %>" min="0">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <%= project ? 'Update Project' : 'Create Project' %>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
